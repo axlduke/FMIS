@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import {IoMdArrowDropdown} from 'react-icons/io'
 import { Link } from 'react-router-dom'
+import RequestMonitoringModal from '../Modals/Transaction/RequestMonitoringModal'
 
 const Navigation = () => {
     const [isOpen, setIsOpen] = useState({
@@ -37,6 +38,8 @@ const Navigation = () => {
         }
     }, [isOpen])
 
+    const [selectedTransaction, setSelectedTransaction] = useState(null)
+
 
     const transaction = [
         'Request Monitoring',
@@ -69,32 +72,41 @@ const Navigation = () => {
         'tagging'
     ]
     return (
-        <div className="flex justify-between items-center bg-gray-800 w-screen lg:p-5">
+        <div className="absolute top-0 flex justify-between items-center bg-gray-800 w-screen lg:p-2">
             <div className=''>
                 <h1 className='text-white text-lg font-bold uppercase'>accounting</h1>
             </div>
             <div className=''>
                 <ul className='flex justify-evenly items-center space-x-10'>
                     <li className="mb-2" ref={dropdrownRef.transaction}>
-                        <Link
+                        <button
                             className="text-blue-500 hover:underline space-x-3 flex items-center justify-between"
                             onClick={() => toggleDropdown('transaction')}
                         >
                             <span className={`uppercase font-medium ${isOpen.transaction ? 'text-green-600' : 'text-green-300'}`}>transaction</span>
                             <IoMdArrowDropdown className={`transition-transform ${isOpen.transaction ? 'rotate-0 text-green-600' : 'rotate-180 text-green-300'}`}/>
                         
-                        </Link>
+                        </button>
                         {isOpen.transaction && (
-                            <ul className="absolute bg-gray-800 transition-transform ease-linear delay-100 top-20 p-3 space-y-1 rounded-md">
+                            <ul className="absolute bg-gray-800 transition-transform ease-linear delay-100 top-16 p-3 space-y-1 rounded-md">
                                 {
-                                    transaction.map((transactions, index) => (
+                                    transaction.map((module_transaction, index) => (
                                         <li 
                                             key={index}
-                                            className='text-white border-l-transparent hover:border-l-green-300 border-l-4 hover:bg-gray-500 pl-1 rounded-sm'    
-                                        >{transactions}</li>
+                                            className='text-white cursor-pointer border-l-transparent hover:border-l-green-300 border-l-4 hover:bg-gray-500 pl-1 rounded-sm'    
+                                            onClick={() => {
+                                                setSelectedTransaction(module_transaction)
+                                                toggleDropdown('transaction')
+                                            }}
+                                        >
+                                            {module_transaction}
+                                        </li>
                                     ))
                                 }
                             </ul>
+                        )}
+                        {selectedTransaction === 'Request Monitoring' && (
+                            <RequestMonitoringModal onClose={() => setSelectedTransaction(null)} />
                         )}
                     </li>
                     <li className="mb-2" ref={dropdrownRef.maintenance}>
@@ -107,13 +119,13 @@ const Navigation = () => {
                         
                         </button>
                         {isOpen.maintenance && (
-                            <ul className="absolute bg-gray-800 transition-transform ease-linear delay-100 top-20 p-3 space-y-1 rounded-md">
+                            <ul className="absolute bg-gray-800 transition-transform ease-linear delay-100 top-16 p-3 space-y-1 rounded-md">
                                 {
-                                    maintenance.map((transactions, index) => (
+                                    maintenance.map((module_maintenance, index) => (
                                         <li 
                                             key={index}
                                             className='text-white border-l-transparent hover:border-l-green-300 border-l-4 hover:bg-gray-500 pl-1 rounded-sm'    
-                                        >{transactions}</li>
+                                        >{module_maintenance}</li>
                                     ))
                                 }
                             </ul>
@@ -129,13 +141,13 @@ const Navigation = () => {
                         
                         </button>
                         {isOpen.utilities && (
-                            <ul className="absolute bg-gray-800 transition-transform ease-linear delay-100 top-20 p-3 space-y-1 rounded-md">
+                            <ul className="absolute bg-gray-800 transition-transform ease-linear delay-100 top-16 p-3 space-y-1 rounded-md">
                                 {
-                                    utilities.map((transactions, index) => (
+                                    utilities.map((module_utilities, index) => (
                                         <li 
                                             key={index}
                                             className='text-white border-l-transparent hover:border-l-green-300 border-l-4 hover:bg-gray-500 pl-1 rounded-sm'    
-                                        >{transactions}</li>
+                                        >{module_utilities}</li>
                                     ))
                                 }
                             </ul>
